@@ -1,46 +1,41 @@
-import "./styles/App.css";
-import Navbar from "./components/Navbar";
-import { BrowserRouter , Routes, Route } from "react-router-dom";
-import NotFound from "./components/NotFound";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Footer from "./components/Footer";
-import { ThemeProvider } from "@emotion/react";
-import { createTheme } from "@mui/material";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React from "react";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from "./utils/theme";
+import "./assets/style.css";
+import Header from "./components/header/index.jsx";
+import Footer from "./components/footer/index.jsx";
+import { BrowserRouter } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import MainNavigation from "./components/MainNavigation";
+import { AuthWrapper } from "./context/auth";
+// import loader from "../src/assets/images/loader.gif";
+// import { CartWrapper } from "./js/context/cart";
 
-
-export const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#f14d54",
-    },
-    secondary: {
-      main: "#06D043",
-    },
-    customColor: {
-      main: "#F4F4F4",
-    },
-  },
-});
-function App() {
+const App = () => {
   return (
-    <>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <React.Suspense fallback={<></>}>
         <BrowserRouter>
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
+          <AuthWrapper>
+            {/* <CartWrapper> */}
+              {/* <div className="loader-wrapper">
+                <img src={loader} alt="loader" />
+              </div> */}
+              <div className="wrapper">
+                <Header />
+                <main>
+                  <MainNavigation />
+                </main>
+                <Footer />
+              </div>
+              <ToastContainer />
+            {/* </CartWrapper> */}
+          </AuthWrapper>
         </BrowserRouter>
-        <ToastContainer />
-      </ThemeProvider>
-    </>
+      </React.Suspense>
+    </ThemeProvider>
   );
-}
+};
 
 export default App;
